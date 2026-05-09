@@ -1,0 +1,132 @@
+# 量子量化交易系统 - 默认配置
+
+# 系统设置
+system:
+  name: "量子"
+  version: "0.1.2"
+  environment: "backtest"  # backtest / paper / live
+  log_level: "INFO"
+  log_dir: "./logs"
+  data_dir: "./data"
+
+# 数据源
+data:
+  primary_source: "yahoo"  # yahoo / akshare / tushare
+  cache_enabled: true
+  cache_dir: "./data/cache"
+  sources:
+    yahoo:
+      enabled: true
+      rate_limit_delay: 0.5
+      max_retries: 3
+    akshare:
+      enabled: false
+      rate_limit_delay: 0.5
+    tushare:
+      enabled: false
+      token: ""
+
+# 回测配置
+backtest:
+  initial_capital: 1000000         # 100万
+  commission_rate: 0.0003          # 万3
+  min_commission: 5.0              # 最低5元
+  tax_rate: 0.001                  # 印花税千1
+  slippage: 0.001                  # 滑点千1
+  lot_size: 100                    # 整手100股
+  allow_short: false               # A股不能做空
+  benchmark: "000300"              # 沪深300基准
+
+# 策略配置
+strategies:
+  # TrendGrid v2 - 推荐策略
+  - name: "TrendGrid_德明利"
+    class: "trend_grid.TrendGridStrategy"
+    category: "trend_following"
+    enabled: true
+    symbols:
+      - "001309.SZ"
+    parameters:
+      trend_ma: 45
+      grid_levels: 3
+      grid_spacing: 0.05
+      profit_target: 0.15
+      stop_loss_pct: 0.12
+      max_position_pct: 0.75
+      entry_ma_ratio: 0.95
+    timeframe: "daily"
+    capital_pct: 0.3
+
+  - name: "TrendGrid_茅台"
+    class: "trend_grid.TrendGridStrategy"
+    category: "trend_following"
+    enabled: true
+    symbols:
+      - "600519.SS"
+    parameters:
+      trend_ma: 60
+      grid_levels: 3
+      grid_spacing: 0.05
+      profit_target: 0.15
+      stop_loss_pct: 0.10
+      max_position_pct: 0.60
+      entry_ma_ratio: 0.95
+    timeframe: "daily"
+    capital_pct: 0.3
+
+  - name: "TrendGrid_宁德"
+    class: "trend_grid.TrendGridStrategy"
+    category: "trend_following"
+    enabled: true
+    symbols:
+      - "300750.SZ"
+    parameters:
+      trend_ma: 60
+      grid_levels: 3
+      grid_spacing: 0.05
+      profit_target: 0.15
+      stop_loss_pct: 0.10
+      max_position_pct: 0.60
+      entry_ma_ratio: 0.95
+    timeframe: "daily"
+    capital_pct: 0.3
+
+  - name: "TrendGrid_工行"
+    class: "trend_grid.TrendGridStrategy"
+    category: "trend_following"
+    enabled: true
+    symbols:
+      - "601398.SS"
+    parameters:
+      trend_ma: 60
+      grid_levels: 3
+      grid_spacing: 0.03
+      profit_target: 0.10
+      stop_loss_pct: 0.08
+      max_position_pct: 0.60
+      entry_ma_ratio: 0.95
+    timeframe: "daily"
+    capital_pct: 0.3
+
+# 风控配置
+risk:
+  max_single_position_pct: 0.2     # 单品种上限20%
+  max_total_positions: 10           # 最多10个持仓
+  max_leverage: 1.0                # 无杠杆
+  min_cash_reserve: 0.1            # 10%现金储备
+  trailing_stop_pct: 0.05          # 5%移动止损
+  daily_loss_limit: 0.05           # 日亏损上限5%
+  drawdown_limit: 0.15             # 最大回撤15%
+
+# 实盘交易（谨慎启用）
+live_trading:
+  enabled: false
+  broker: "paper"                  # paper / xtp / qmt
+  broker_config:
+    account: ""
+    password: ""
+
+# 监控
+monitoring:
+  dashboard_port: 8050
+  alert_cooldown_seconds: 60
