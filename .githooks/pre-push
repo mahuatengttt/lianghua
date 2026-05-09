@@ -1,0 +1,22 @@
+#!/bin/bash
+# pre-push hook - 禁止直接推送 main 分支，必须通过 pull request
+# 安装: cp this-file .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+
+protected_branch="main"
+current_branch=$(git symbolic-ref HEAD 2>/dev/null | sed 's/refs\/heads\///')
+
+if [ "$current_branch" = "$protected_branch" ]; then
+    echo ""
+    echo "❌ 禁止直接推送 $protected_branch 分支！"
+    echo ""
+    echo "   请创建一个新分支并提交 Pull Request："
+    echo ""
+    echo "   git checkout -b feature/你的分支名"
+    echo "   git add -A"
+    echo "   git commit -m '描述你的修改'"
+    echo "   git push -u origin feature/你的分支名"
+    echo ""
+    echo "   然后在 GitHub 上打开 Pull Request → 等待马总审核合入"
+    echo ""
+    exit 1
+fi
