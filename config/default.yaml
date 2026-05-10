@@ -11,16 +11,20 @@ system:
 
 # 数据源
 data:
-  primary_source: "yahoo"  # yahoo / akshare / tushare
+  primary_source: "tencent"  # tencent / yahoo / akshare / tushare
   cache_enabled: true
   cache_dir: "./data/cache"
   sources:
+    tencent:
+      enabled: true
+      rate_limit_delay: 0.3
+      max_retries: 3
     yahoo:
       enabled: true
       rate_limit_delay: 0.5
       max_retries: 3
     akshare:
-      enabled: false
+      enabled: true
       rate_limit_delay: 0.5
     tushare:
       enabled: false

@@ -114,21 +114,10 @@ class TrendGridStrategy(BaseStrategy):
                 self._position_levels[symbol] = []
                 return signals[-1]
 
-            # 达到止盈 → 清仓
-            if profit_pct >= self.profit_target:
-                signals.append(Signal(
-                    timestamp=bar.time, symbol=symbol,
-                    action=SignalAction.CLOSE_LONG,
-                    price=current_price, quantity=total_qty,
-                    confidence=0.8,
-                    strategy_name=self.name,
-                    reason=f"达到止盈{self.profit_target*100:.0f}%: 成本{avg_cost:.2f}→{current_price:.2f}, +{profit_pct*100:.1f}%",
-                ))
-                self._in_position[symbol] = False
-                self._position_levels[symbol] = []
-                return signals[-1]
+            # 止盈逻辑已移除——仅靠趋势反转（MA下穿）离场
+            pass
 
-        # === 买入逻辑（仅在上升趋势中）===
+        # === 买入逻辑（仅在上升趋势中） ===
         if trend_up and len(positions) < self.grid_levels:
             ref_price = positions[-1]['price'] if positions else ma * self.entry_ma_ratio
 
