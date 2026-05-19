@@ -1,0 +1,43 @@
+# ===== 黑镜量化系统 - Gitignore =====
+
+# 回测输出
+bt_unified_output/
+bt_output/
+
+# 数据目录（全量A股日线数据，几十GB）
+a_stock_data/
+
+# 日志
+*.log
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# 编辑器/系统文件
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# 中间产物
+tmp/
+_*.txt
+*_tmp/
+bt_result.csv
+candidates_*.csv
+
+# 旧的临时脚本
+backtest_lowmem.py.bak
+backtest_lowmem_v2.py
+bt_full_final.py
+bt_full_scan.py
+bt_full_scan_v2.py
+bt_full_scan_v3.py
+black_mirror_screen.py
+concept_data.py
+fast_compute_factors.py
+run_bt_segmented.sh
